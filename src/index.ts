@@ -112,8 +112,9 @@ server.tool(
 	{
 		query: z.string(),
 		variables: z.string().optional(),
+		headers: z.string().optional(),
 	},
-	async ({ query, variables }) => {
+	async ({ query, variables, headers }) => {
 		try {
 			const parsedQuery = parse(query);
 
@@ -151,7 +152,7 @@ server.tool(
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					...env.HEADERS,
+					...(headers ? JSON.parse(headers) : env.HEADERS),
 				},
 				body: JSON.stringify({
 					query,
